@@ -32,13 +32,13 @@ async def read_petrol_stations(skip: int = 0, limit: int = 10):
     return petrol_station_db[skip : skip + limit]
 
 
-@app.get("/petrol_stations/{petrol_id}")
-async def read_petrolstation(petrol_id: int):
-    item_dic = [dic for dic in petrol_station_db if dic["id"] == petrol_id]
+@app.get("/petrol_stations/{petrol_station_id}")
+async def read_petrol_station(petrol_station_id: int):
+    item_dic = [dic for dic in petrol_station_db if dic["id"] == petrol_station_id]
     if item_dic:
         return item_dic[0]
     else:
-        return f"No entry of petrol station in database for id {petrol_id}"
+        return f"No entry of petrol station in database for id {petrol_station_id}"
 
 
 @app.post("/petrol_stations/")
