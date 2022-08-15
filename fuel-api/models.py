@@ -1,27 +1,46 @@
 from typing import Union
+from uuid import UUID
 
 from pydantic import BaseModel
+from pydantic import Field
 from pydantic import HttpUrl
 
 
 class Petroleum(BaseModel):
-    id: int
-    name: str
-    short_name: str
-    description: Union[str, None] = None
-    tax: Union[float, None] = None
+    id: UUID
+    name: str = Field(
+        title="The name of the petroleum",
+        max_length=20,
+        example="Diesel",
+    )
+    short_name: str = Field(
+        title="The ISO petroleum short name",
+        max_length=5,
+        example="ON",
+    )
+    description: Union[str, None] = Field(
+        default=None,
+        title="The description of the petroleum",
+        max_length=300,
+        example="Diesel Petroleum",
+    )
+    tax: float = Field(
+        title="The percent amount of tax applied to petroleum",
+        gt=0,
+        example=8,
+    )
 
 
 class Image(BaseModel):
     url: HttpUrl
-    name: str
+    name: Union[str, None] = None
 
 
 class PetrolStation(BaseModel):
     id: int
     name: str
     sold_petroleum: set[str] = set()
-    City: Union[str, None] = None
-    Address: Union[str, None] = None
+    city: Union[str, None] = None
+    address: Union[str, None] = None
     image: Union[Image, None] = None
-    Active: bool
+    active: bool
