@@ -2,6 +2,7 @@ from db import petrol_db
 from db import petrol_price_db
 from db import petrol_station_db
 from fastapi import FastAPI
+from fastapi import Path
 from fastapi import Query
 from models import Petroleum
 from models import PetrolStation
@@ -18,7 +19,9 @@ async def read_fuels(
 
 
 @app.get("/fuels/{fuel_id}")
-async def read_fuel(fuel_id: int):
+async def read_fuel(
+    fuel_id: int = Path(title="The ID of the petroleum to get", ge=1),
+):
     item_dic = [dic for dic in petrol_db if dic["id"] == fuel_id]
     if item_dic:
         return item_dic[0]
@@ -29,7 +32,7 @@ async def read_fuel(fuel_id: int):
 @app.post("/fuels/")
 async def create_fuel(petroleum: Petroleum):
     petrol_db.append(petroleum)
-    return petroleum.name.upper()
+    return petroleum
 
 
 @app.get("/petrol_stations/")
@@ -41,7 +44,9 @@ async def read_petrol_stations(
 
 
 @app.get("/petrol_stations/{petrol_station_id}")
-async def read_petrol_station(petrol_station_id: int):
+async def read_petrol_station(
+    petrol_station_id: int = Path(title="The ID of the petroleum to get", ge=1)
+):
     item_dic = [dic for dic in petrol_station_db if dic["id"] == petrol_station_id]
     if item_dic:
         return item_dic[0]
