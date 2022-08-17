@@ -1,4 +1,5 @@
 from db import petrol_db
+from db import petrol_price_db
 from db import petrol_station_db
 from fastapi import FastAPI
 from models import Petroleum
@@ -45,3 +46,8 @@ async def read_petrol_station(petrol_station_id: int):
 async def create_petrol_station(petrol_station: PetrolStation):
     petrol_station_db.append(petrol_station)
     return petrol_station
+
+
+@app.get("/prices/")
+async def read_petrol_price(skip: int = 0, limit: int = 10):
+    return petrol_price_db[skip : skip + limit]

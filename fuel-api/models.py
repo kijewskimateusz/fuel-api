@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Union
 from uuid import UUID
 
@@ -44,3 +45,27 @@ class PetrolStation(BaseModel):
     address: Union[str, None] = None
     image: Union[Image, None] = None
     active: bool
+
+
+class PetrolPrice(BaseModel):
+    id: int = Field(
+        title="ID of petrol price record",
+        gt=0,
+        example=1,
+    )
+    petroleum_id: int = Field(
+        title="ID of petroleum",
+        gt=0,
+        example=1,
+    )
+    petrol_station_id: int = Field(
+        title="ID of petrol station",
+        gt=0,
+        example=1,
+    )
+    price: float = Field(
+        title="petrol price at the measurement",
+        gt=0,
+        example=1,
+    )
+    created_at: datetime
