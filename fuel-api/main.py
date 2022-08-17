@@ -2,6 +2,7 @@ from db import petrol_db
 from db import petrol_price_db
 from db import petrol_station_db
 from fastapi import FastAPI
+from fastapi import Query
 from models import Petroleum
 from models import PetrolStation
 
@@ -9,7 +10,10 @@ app = FastAPI()
 
 
 @app.get("/fuels/")
-async def read_fuels(skip: int = 0, limit: int = 10):
+async def read_fuels(
+    skip: int = Query(default=0, gt=0, lt=5),
+    limit: int = Query(default=10, gt=0, lt=1000),
+):
     return petrol_db[skip : skip + limit]
 
 
@@ -29,7 +33,10 @@ async def create_fuel(petroleum: Petroleum):
 
 
 @app.get("/petrol_stations/")
-async def read_petrol_stations(skip: int = 0, limit: int = 10):
+async def read_petrol_stations(
+    skip: int = Query(default=0, gt=0, lt=5),
+    limit: int = Query(default=10, gt=0, lt=1000),
+):
     return petrol_station_db[skip : skip + limit]
 
 
@@ -49,5 +56,8 @@ async def create_petrol_station(petrol_station: PetrolStation):
 
 
 @app.get("/prices/")
-async def read_petrol_price(skip: int = 0, limit: int = 10):
+async def read_petrol_price(
+    skip: int = Query(default=0, gt=0, lt=5),
+    limit: int = Query(default=10, gt=0, lt=1000),
+):
     return petrol_price_db[skip : skip + limit]
