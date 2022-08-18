@@ -83,6 +83,18 @@ async def create_petrol_station(petrol_station: PetrolStation):
     return petrol_station
 
 
+@app.post("/petrol_stations/custom_date", response_model=PetrolStation)
+async def create_petrol_station_with_date(
+    petrol_station: PetrolStation,
+    created_at: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    updated_at: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+):
+    petrol_station.updated_at = updated_at
+    petrol_station.created_at = created_at
+    petrol_station_db.append(petrol_station)
+    return petrol_station
+
+
 @app.get(
     "/prices/", response_model=list[PetrolPrice], response_model_exclude={"created_at"}
 )
