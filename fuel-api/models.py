@@ -32,6 +32,16 @@ class Petroleum(BaseModel):
         example=8,
         default=1.00,
     )
+    created_at: datetime = Field(
+        title="Creation time",
+        example="2021-07-20 16:26:24",
+        default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    )
+    updated: datetime = Field(
+        title="Creation time",
+        example="2021-07-20 16:26:24",
+        default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    )
 
 
 class Image(BaseModel):
