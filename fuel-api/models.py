@@ -37,7 +37,7 @@ class Petroleum(BaseModel):
         example="2021-07-20 16:26:24",
         default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     )
-    updated: Union[datetime, None] = Field(
+    updated_at: Union[datetime, None] = Field(
         title="Creation time",
         example="2021-07-20 16:26:24",
         default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -87,7 +87,7 @@ class PetrolPrice(BaseModel):
         example="2021-07-20 16:26:24",
         default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     )
-    updated: Union[datetime, None] = Field(
+    updated_at: Union[datetime, None] = Field(
         title="Creation time",
         example="2021-07-20 16:26:24",
         default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
