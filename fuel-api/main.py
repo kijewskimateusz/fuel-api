@@ -5,12 +5,16 @@ from fastapi import FastAPI
 from fastapi import Path
 from fastapi import Query
 from models import Petroleum
+from models import PetrolPrice
 from models import PetrolStation
+
 
 app = FastAPI()
 
 
-@app.get("/fuels/")
+@app.get(
+    "/fuels/", response_model=list[Petroleum], response_model_exclude={"description"}
+)
 async def read_fuels(
     skip: int = Query(default=0, gt=0, lt=5),
     limit: int = Query(default=10, gt=0, lt=1000),
@@ -18,7 +22,9 @@ async def read_fuels(
     return petrol_db[skip : skip + limit]
 
 
-@app.get("/fuels/{fuel_id}")
+@app.get(
+    "/fuels/{fuel_id}", response_model=Petroleum, response_model_exclude_unset=False
+)
 async def read_fuel(
     fuel_id: int = Path(title="The ID of the petroleum to get", ge=1),
 ):
@@ -29,13 +35,13 @@ async def read_fuel(
         return f"No entry of petrol in database for id {fuel_id}"
 
 
-@app.post("/fuels/")
+@app.post("/fuels/", response_model=Petroleum)
 async def create_fuel(petroleum: Petroleum):
     petrol_db.append(petroleum)
     return petroleum
 
 
-@app.get("/petrol_stations/")
+@app.get("/petrol_stations/", response_model=list[PetrolStation])
 async def read_petrol_stations(
     skip: int = Query(default=0, gt=0, lt=5),
     limit: int = Query(default=10, gt=0, lt=1000),
@@ -43,7 +49,7 @@ async def read_petrol_stations(
     return petrol_station_db[skip : skip + limit]
 
 
-@app.get("/petrol_stations/{petrol_station_id}")
+@app.get("/petrol_stations/{petrol_station_id}", response_model=PetrolStation)
 async def read_petrol_station(
     petrol_station_id: int = Path(title="The ID of the petroleum to get", ge=1)
 ):
@@ -54,13 +60,15 @@ async def read_petrol_station(
         return f"No entry of petrol station in database for id {petrol_station_id}"
 
 
-@app.post("/petrol_stations/")
+@app.post("/petrol_stations/", response_model=PetrolStation)
 async def create_petrol_station(petrol_station: PetrolStation):
     petrol_station_db.append(petrol_station)
     return petrol_station
 
 
-@app.get("/prices/")
+@app.get(
+    "/prices/", response_model=list[PetrolPrice], response_model_exclude={"created_at"}
+)
 async def read_petrol_price(
     skip: int = Query(default=0, gt=0, lt=5),
     limit: int = Query(default=10, gt=0, lt=1000),

@@ -1,7 +1,7 @@
 petrol_db = [
-    {"id": 1, "name": "Diesel", "short_name": "ON", "description": ""},
+    {"id": 1, "name": "Diesel", "short_name": "ON", "description": "", "tax": 1.1},
     {"id": 2, "name": "Gasoline", "short_name": "PB95", "description": ""},
-    {"id": 3, "name": "LPG", "short_name": "LPG", "description": ""},
+    {"id": 3, "short_name": "LPG", "description": "", "tax": 1.3},
 ]
 
 petrol_station_db = [

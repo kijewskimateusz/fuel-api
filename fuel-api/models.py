@@ -1,6 +1,5 @@
 from datetime import datetime
 from typing import Union
-from uuid import UUID
 
 from pydantic import BaseModel
 from pydantic import Field
@@ -8,16 +7,18 @@ from pydantic import HttpUrl
 
 
 class Petroleum(BaseModel):
-    id: UUID
+    id: int
     name: str = Field(
         title="The name of the petroleum",
         max_length=20,
         example="Diesel",
+        default="",
     )
     short_name: str = Field(
         title="The ISO petroleum short name",
         max_length=5,
         example="ON",
+        default="",
     )
     description: Union[str, None] = Field(
         default=None,
@@ -29,6 +30,7 @@ class Petroleum(BaseModel):
         title="The percent amount of tax applied to petroleum",
         gt=0,
         example=8,
+        default=1.00,
     )
 
 
@@ -68,4 +70,8 @@ class PetrolPrice(BaseModel):
         gt=0,
         example=1,
     )
-    created_at: datetime
+    created_at: datetime = Field(
+        title="",
+        example="",
+        default=datetime.now(),
+    )
