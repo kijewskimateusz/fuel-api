@@ -32,7 +32,7 @@ async def read_fuel(
     if item_dic:
         return item_dic[0]
     else:
-        return f"No entry of petrol in database for id {fuel_id}"
+        return Petroleum(id=-1, description=f"No fuel with that ID {fuel_id}")
 
 
 @app.post("/fuels/", response_model=Petroleum)
@@ -57,7 +57,11 @@ async def read_petrol_station(
     if item_dic:
         return item_dic[0]
     else:
-        return f"No entry of petrol station in database for id {petrol_station_id}"
+        return PetrolStation(
+            id=-1,
+            name=f"No petrol station with that ID {petrol_station_id}",
+            active=False,
+        )
 
 
 @app.post("/petrol_stations/", response_model=PetrolStation)
