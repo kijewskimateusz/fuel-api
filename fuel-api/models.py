@@ -32,12 +32,12 @@ class Petroleum(BaseModel):
         example=8,
         default=1.00,
     )
-    created_at: datetime = Field(
+    created_at: Union[datetime, None] = Field(
         title="Creation time",
         example="2021-07-20 16:26:24",
         default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     )
-    updated: datetime = Field(
+    updated: Union[datetime, None] = Field(
         title="Creation time",
         example="2021-07-20 16:26:24",
         default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -57,6 +57,8 @@ class PetrolStation(BaseModel):
     address: Union[str, None] = None
     image: Union[Image, None] = None
     active: bool
+    created_at: Union[datetime, None] = None
+    updated_at: Union[datetime, None] = None
 
 
 class PetrolPrice(BaseModel):
@@ -80,8 +82,13 @@ class PetrolPrice(BaseModel):
         gt=0,
         example=1,
     )
-    created_at: datetime = Field(
-        title="",
-        example="",
-        default=datetime.now(),
+    created_at: Union[datetime, None] = Field(
+        title="Creation time",
+        example="2021-07-20 16:26:24",
+        default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    )
+    updated: Union[datetime, None] = Field(
+        title="Creation time",
+        example="2021-07-20 16:26:24",
+        default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     )
