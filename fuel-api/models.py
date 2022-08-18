@@ -38,14 +38,14 @@ class Petroleum(BaseModel):
         default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     )
     updated_at: Union[datetime, None] = Field(
-        title="Creation time",
+        title="Update time",
         example="2021-07-20 16:26:24",
         default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     )
 
 
 class Image(BaseModel):
-    url: HttpUrl
+    url: HttpUrl = Field("https://default_value.org/")
     name: Union[str, None] = None
 
 
@@ -57,8 +57,16 @@ class PetrolStation(BaseModel):
     address: Union[str, None] = None
     image: Union[Image, None] = None
     active: bool
-    created_at: Union[datetime, None] = None
-    updated_at: Union[datetime, None] = None
+    created_at: Union[datetime, None] = Field(
+        title="Creation time",
+        example="2021-07-20 16:26:24",
+        default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    )
+    updated_at: Union[datetime, None] = Field(
+        title="Update time",
+        example="2021-07-20 16:26:24",
+        default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    )
 
 
 class PetrolPrice(BaseModel):
@@ -82,13 +90,8 @@ class PetrolPrice(BaseModel):
         gt=0,
         example=1,
     )
-    created_at: Union[datetime, None] = Field(
-        title="Creation time",
-        example="2021-07-20 16:26:24",
-        default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-    )
-    updated_at: Union[datetime, None] = Field(
-        title="Creation time",
-        example="2021-07-20 16:26:24",
-        default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    created_at: datetime = Field(
+        title="",
+        example="",
+        default=datetime.now(),
     )
