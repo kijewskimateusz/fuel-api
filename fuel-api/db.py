@@ -9,17 +9,17 @@ petrol_station_db = [
         "id": 1,
         "name": "Auchan",
         "sold_petroleum": [],
-        "City": "",
-        "Street": "",
-        "Active": "",
+        "city": "",
+        "street": "",
+        "active": False,
     },
     {
         "id": 2,
         "name": "BP",
         "sold_petroleum": [],
-        "City": "",
-        "Street": "",
-        "Active": "",
+        "city": "",
+        "street": "",
+        "active": False,
     },
 ]
 

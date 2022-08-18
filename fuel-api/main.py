@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from db import petrol_db
 from db import petrol_price_db
 from db import petrol_station_db
@@ -8,15 +10,16 @@ from models import Petroleum
 from models import PetrolPrice
 from models import PetrolStation
 
-
 app = FastAPI()
 
 
 @app.get(
-    "/fuels/", response_model=list[Petroleum], response_model_exclude={"description"}
+    "/fuels/",
+    response_model=list[Petroleum],
+    response_model_exclude=["description", "created_at"],
 )
 async def read_fuels(
-    skip: int = Query(default=0, gt=0, lt=5),
+    skip: int = Query(default=0, ge=0, lt=5),
     limit: int = Query(default=10, gt=0, lt=1000),
 ):
     return petrol_db[skip : skip + limit]
@@ -32,7 +35,7 @@ async def read_fuel(
     if item_dic:
         return item_dic[0]
     else:
-        return f"No entry of petrol in database for id {fuel_id}"
+        return Petroleum(id=-1, description=f"No fuel with that ID {fuel_id}")
 
 
 @app.post("/fuels/", response_model=Petroleum)
@@ -41,9 +44,24 @@ async def create_fuel(petroleum: Petroleum):
     return petroleum
 
 
+@app.post(
+    "/fuels/custom_date",
+    response_model=Petroleum,
+)
+async def create_fuel_with_date(
+    petroleum: Petroleum,
+    created_at: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    updated_at: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+):
+    petroleum.updated_at = updated_at
+    petroleum.created_at = created_at
+    petrol_db.append(petroleum)
+    return petroleum
+
+
 @app.get("/petrol_stations/", response_model=list[PetrolStation])
 async def read_petrol_stations(
-    skip: int = Query(default=0, gt=0, lt=5),
+    skip: int = Query(default=0, ge=0, lt=5),
     limit: int = Query(default=10, gt=0, lt=1000),
 ):
     return petrol_station_db[skip : skip + limit]
@@ -57,7 +75,11 @@ async def read_petrol_station(
     if item_dic:
         return item_dic[0]
     else:
-        return f"No entry of petrol station in database for id {petrol_station_id}"
+        return PetrolStation(
+            id=-1,
+            name=f"No petrol station with that ID {petrol_station_id}",
+            active=False,
+        )
 
 
 @app.post("/petrol_stations/", response_model=PetrolStation)
@@ -66,11 +88,23 @@ async def create_petrol_station(petrol_station: PetrolStation):
     return petrol_station
 
 
+@app.post("/petrol_stations/custom_date", response_model=PetrolStation)
+async def create_petrol_station_with_date(
+    petrol_station: PetrolStation,
+    created_at: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    updated_at: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+):
+    petrol_station.updated_at = updated_at
+    petrol_station.created_at = created_at
+    petrol_station_db.append(petrol_station)
+    return petrol_station
+
+
 @app.get(
     "/prices/", response_model=list[PetrolPrice], response_model_exclude={"created_at"}
 )
 async def read_petrol_price(
-    skip: int = Query(default=0, gt=0, lt=5),
+    skip: int = Query(default=0, ge=0, lt=5),
     limit: int = Query(default=10, gt=0, lt=1000),
 ):
     return petrol_price_db[skip : skip + limit]
