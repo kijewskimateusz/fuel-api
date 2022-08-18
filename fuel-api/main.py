@@ -14,10 +14,12 @@ app = FastAPI()
 
 
 @app.get(
-    "/fuels/", response_model=list[Petroleum], response_model_exclude={"description"}
+    "/fuels/",
+    response_model=list[Petroleum],
+    response_model_exclude=["description", "created_at"],
 )
 async def read_fuels(
-    skip: int = Query(default=0, gt=0, lt=5),
+    skip: int = Query(default=0, ge=0, lt=5),
     limit: int = Query(default=10, gt=0, lt=1000),
 ):
     return petrol_db[skip : skip + limit]
@@ -42,7 +44,10 @@ async def create_fuel(petroleum: Petroleum):
     return petroleum
 
 
-@app.post("/fuels/custom_date", response_model=Petroleum)
+@app.post(
+    "/fuels/custom_date",
+    response_model=Petroleum,
+)
 async def create_fuel_with_date(
     petroleum: Petroleum,
     created_at: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -56,7 +61,7 @@ async def create_fuel_with_date(
 
 @app.get("/petrol_stations/", response_model=list[PetrolStation])
 async def read_petrol_stations(
-    skip: int = Query(default=0, gt=0, lt=5),
+    skip: int = Query(default=0, ge=0, lt=5),
     limit: int = Query(default=10, gt=0, lt=1000),
 ):
     return petrol_station_db[skip : skip + limit]
@@ -99,7 +104,7 @@ async def create_petrol_station_with_date(
     "/prices/", response_model=list[PetrolPrice], response_model_exclude={"created_at"}
 )
 async def read_petrol_price(
-    skip: int = Query(default=0, gt=0, lt=5),
+    skip: int = Query(default=0, ge=0, lt=5),
     limit: int = Query(default=10, gt=0, lt=1000),
 ):
     return petrol_price_db[skip : skip + limit]
