@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from db import petrol_db
 from db import petrol_price_db
 from db import petrol_station_db
@@ -7,7 +9,6 @@ from fastapi import Query
 from models import Petroleum
 from models import PetrolPrice
 from models import PetrolStation
-
 
 app = FastAPI()
 
@@ -37,6 +38,18 @@ async def read_fuel(
 
 @app.post("/fuels/", response_model=Petroleum)
 async def create_fuel(petroleum: Petroleum):
+    petrol_db.append(petroleum)
+    return petroleum
+
+
+@app.post("/fuels/custom_date", response_model=Petroleum)
+async def create_fuel_with_date(
+    petroleum: Petroleum,
+    created_at: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    updated_at: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+):
+    petroleum.updated_at = updated_at
+    petroleum.created_at = created_at
     petrol_db.append(petroleum)
     return petroleum
 
